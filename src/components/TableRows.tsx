@@ -6,7 +6,6 @@ interface TableRowPropsTypes{
 }
 
 function TableRows({rows}:TableRowPropsTypes) {
-    console.log(rows)
     if (rows === undefined) return <></>
     return (
         <>
