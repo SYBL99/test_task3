@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useParams } from "react-router-dom";
 import getAllPosts from "../API/GetAllPosts";
+import Pagination from "../components/Pagination";
 import Search from "../components/Search";
 import TableHeader from "../components/TableHeader";
 import TableRows from "../components/TableRows";
@@ -12,7 +13,7 @@ function Home () {
     const {data} = useParams()
     const [table, setTable] = useState<APIResponseTypes[]>([])
     const [splitedTable, setSplitedTable] = useState<APIResponseTypes[][]>([])
-    console.log('чек из',forCheck)
+    const [currentPage, setCurrentPage] = useState(0)
 
     async function getData(){
         try {
@@ -34,14 +35,17 @@ function Home () {
         setForCheck(splitedArray[0])
     }
 
-    function setHomeSearchParams() {
+    function setSearchParamsAndCurrentPage() {
         if (searchParams.get('page') === null) {
             setSearchParams('page=1')
-        } 
+            setCurrentPage(0)
+        } else {
+            setCurrentPage(+(searchParams.get('page')||1)-1)
+        }
     }
     
     useEffect(() => { splitTableByLimit(10) }, [table])
-    useEffect(() => {getData() ; setHomeSearchParams()},[])
+    useEffect(() => {getData() ; setSearchParamsAndCurrentPage()},[])
 
 
     return(
@@ -51,7 +55,8 @@ function Home () {
             <button onClick={() => {console.log(splitedTable)}}>Жми</button>
             <button onClick={() => { setSearchParams('page=2') }}>2</button>
             <button onClick={() => { setSearchParams('page=3') }}>3</button>
-            <TableRows rows={forCheck}/>
+            <TableRows rows={splitedTable[currentPage]}/>
+            <Pagination setCurrentPage={setCurrentPage}/>
         </div>
     )
 }
