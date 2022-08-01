@@ -1,6 +1,6 @@
 import React from 'react';
 import './css/App.css';
-import Table from './pages/Home';
+import Table from './pages/Table';
 import {Route, Routes} from 'react-router-dom';
 
 function App() {

@@ -1,23 +1,35 @@
 import React from "react";
 import {URLSearchParamsInit} from "react-router-dom";
+import getArrayOfPageNumber from "../utils/getNumberOfPage";
 
-interface PaginationPropTypes {
+interface PaginationPropsTypes {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>
     setSearchParams: (nextInit: URLSearchParamsInit, navigateOptions?: {
         replace?: boolean | undefined;
         state?: any;
     } | undefined) => void
+    numberOfPage: number
+    currentPage: number
 }
 
-function Pagination({setCurrentPage, setSearchParams}:PaginationPropTypes) {
-
+function Pagination({setCurrentPage, setSearchParams, numberOfPage, currentPage}: PaginationPropsTypes) {
+    function handleClick(page: number) {
+        console.log(page, page >= numberList[0] && page <= numberList[numberList.length - 1])
+        if (page >= numberList[0] && page <= numberList[numberList.length - 1]) {
+            setCurrentPage(page - 1)
+            setSearchParams(`page=${page}`)
+        }
+    }
+    const numberList = getArrayOfPageNumber(numberOfPage)
     return (
         <div className="table__pagination">
-            <div>Назад</div>
-            <div onClick={()=>{ setCurrentPage(0);setSearchParams('page=1') }}>1</div>
-            <div onClick={() => { setCurrentPage(1); setSearchParams('page=2') }}>2</div>
-            <div onClick={() => { setCurrentPage(2); setSearchParams('page=3') }}>3</div>
-            <div>Вперед</div>
+            <div className="table__pagination-side" onClick={() => { handleClick(currentPage)}}>Назад</div>
+            <div className="table__pagination-wrapper">
+                {numberList.map((item, index) =>
+                    <div className={index === currentPage ? 'pagination__button-active' : 'pagination__button'}
+                        key={item} onClick={() => { handleClick(item) }}>{item}</div>)}
+            </div>
+            <div className="table__pagination-side" onClick={() => { handleClick(currentPage+2) }}>Вперед</div>
         </div>
     )
 }
