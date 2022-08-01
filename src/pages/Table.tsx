@@ -39,6 +39,8 @@ function Table () {
             setSortedTable([...searchedTabel].sort(
                 (a, b) => (a[sort.sortIdent as keyof typeof a] < b[sort.sortIdent as keyof typeof b] ? -1 : 1)))
         }
+        setCurrentPage(0)
+        setSearchParams('page=1')
     }
 
     function splitTableByLimit(limit: number = 10) {
