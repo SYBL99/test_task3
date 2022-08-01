@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import getAllPosts from "../API/GetAllPosts";
 import Pagination from "../components/Pagination";
 import Search from "../components/Search";
@@ -27,7 +27,8 @@ function Table () {
     }
 
     function applyFilter() {
-        setSearchedTabel(table.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) || elem.title.toLowerCase().includes(filterQuery.toLowerCase())))
+        setSearchedTabel(table.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) 
+            || elem.title.toLowerCase().includes(filterQuery.toLowerCase())))
     }
 
     function applySort() {
@@ -62,8 +63,6 @@ function Table () {
     useEffect(() => { applyFilter() }, [filterQuery, table])
     useEffect(() => { applySort() }, [searchedTabel])
     useEffect(() => { splitTableByLimit(10) }, [sortedTable])
-
-
 
     return(
         <div className="table">

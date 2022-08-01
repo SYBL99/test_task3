@@ -3,12 +3,14 @@ import React from "react";
 interface SearchPropsTypes {
     filterQuery: string;
     setFilterQuery: React.Dispatch<React.SetStateAction<string>>;
-    }
+}
 
 function Search({filterQuery, setFilterQuery }:SearchPropsTypes) {
+
     function inputHandler(event: React.ChangeEvent<HTMLInputElement>) {
         setFilterQuery(event.target.value)
     }
+
     return (
         <div className="search">
             <input placeholder="Поиск" value={filterQuery} onChange={inputHandler}/>

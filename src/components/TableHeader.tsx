@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 interface TableHeaderPropsTypes {
-
     setSort: React.Dispatch<React.SetStateAction<{
         sortIdent: string;
         ascending: boolean;
     }>>
     applySort(): void;
 }
+
 function TableHeader({setSort, applySort}:TableHeaderPropsTypes) {
     const [nav, setNav] = useState({ 'id': false, 'title': false, 'body': false })
 
