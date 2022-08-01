@@ -11,7 +11,7 @@ interface TableHeaderPropsTypes {
 function TableHeader({setSort, applySort}:TableHeaderPropsTypes) {
     const [nav, setNav] = useState({ 'id': false, 'title': false, 'body': false })
 
-    useEffect(()=>{applySort(); console.log(nav)},[nav])
+    useEffect(()=>{applySort()},[nav])
 
     function setActive(ident: keyof typeof nav) {
         setSort({ sortIdent: ident, ascending: !(nav[ident]) })

@@ -7,7 +7,6 @@ interface SearchPropsTypes {
 
 function Search({filterQuery, setFilterQuery }:SearchPropsTypes) {
     function inputHandler(event: React.ChangeEvent<HTMLInputElement>) {
-        console.log(filterQuery)
         setFilterQuery(event.target.value)
     }
     return (

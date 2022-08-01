@@ -14,7 +14,6 @@ interface PaginationPropsTypes {
 
 function Pagination({setCurrentPage, setSearchParams, numberOfPage, currentPage}: PaginationPropsTypes) {
     function handleClick(page: number) {
-        console.log(page, page >= numberList[0] && page <= numberList[numberList.length - 1])
         if (page >= numberList[0] && page <= numberList[numberList.length - 1]) {
             setCurrentPage(page - 1)
             setSearchParams(`page=${page}`)

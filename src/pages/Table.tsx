@@ -10,7 +10,7 @@ import { APIResponseTypes } from "../interfaces/APITypes"
 function Table () {
     const [searchParams, setSearchParams] = useSearchParams();
     const [filterQuery, setFilterQuery] = useState('')
-    const [sort, setSort] = useState({ sortIdent: 'id', ascending: true })
+    const [sort, setSort] = useState({ sortIdent: 'id', ascending: false })
     const [table, setTable] = useState<APIResponseTypes[]>([])
     const [searchedTabel, setSearchedTabel] = useState<APIResponseTypes[]>([])
     const [sortedTable, setSortedTable] = useState<APIResponseTypes[]>([])
@@ -22,16 +22,15 @@ function Table () {
             const data = await getAllPosts()
             setTable(data)
         } catch (error) {
-            console.log(error)
+            alert(error)
         }
     }
 
     function applyFilter() {
-        setSearchedTabel(table.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase())))
+        setSearchedTabel(table.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) || elem.title.toLowerCase().includes(filterQuery.toLowerCase())))
     }
 
     function applySort() {
-        console.log('В сортировке')
         if (sort.ascending === true) {
             setSortedTable([...searchedTabel].sort(
                 (a, b) => (a[sort.sortIdent as keyof typeof a] > b[sort.sortIdent as keyof typeof b] ? -1 : 1)))
@@ -39,11 +38,9 @@ function Table () {
             setSortedTable([...searchedTabel].sort(
                 (a, b) => (a[sort.sortIdent as keyof typeof a] < b[sort.sortIdent as keyof typeof b] ? -1 : 1)))
         }
-        setSort({...sort, ascending: !sort.ascending})
     }
 
     function splitTableByLimit(limit: number = 10) {
-        console.log('вызываю сплит')
         let i = 0
         let splitedArray: APIResponseTypes[][] = [];
         while (sortedTable[i * limit] !== undefined) {
@@ -63,9 +60,8 @@ function Table () {
     }
     useEffect(() => { getData(); setURLParamsAndCurrentPage() }, [])
     useEffect(() => { applyFilter() }, [filterQuery, table])
-    useEffect(() => { applySort(); console.log('изменение searched') }, [searchedTabel])
+    useEffect(() => { applySort() }, [searchedTabel])
     useEffect(() => { splitTableByLimit(10) }, [sortedTable])
-    useEffect(() => { console.log(currentPage) }, [currentPage])
 
 
 
