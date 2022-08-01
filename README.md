@@ -1,4 +1,7 @@
 # Getting Started with Create React App
+Хостинг - https://test-task3.vercel.app/?page=1.
+
+Исходный макет - https://www.figma.com/file/amcWeZhjaZ0eSyYiSNG6vN/%D0%9C%D0%B0%D0%BA%D0%B5%D1%82-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D1%8B?node-id=0%3A1.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
