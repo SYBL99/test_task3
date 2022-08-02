@@ -41,7 +41,6 @@ export const tableSlice = createSlice({
     },
 })
 
-// Action creators are generated for each case reducer function
 export const { set, searchTable, sortTable } = tableSlice.actions
 
 export default tableSlice.reducer
