@@ -58,10 +58,15 @@ function Table () {
             setCurrentPage(+(searchParams.get('page')||1)-1)
         }
     }
-    useEffect(() => { getData(); setURLParamsAndCurrentPage() }, [])
-    useEffect(() => { applyFilter() }, [filterQuery, table])
-    useEffect(() => { applySort() }, [searchedTabel])
-    useEffect(() => { splitTableByLimit(10) }, [sortedTable])
+    
+    useEffect(() => { getData(); setURLParamsAndCurrentPage() /* eslint-disable-next-line react-hooks/exhaustive-deps*/ }
+    , [])
+    useEffect(() => {applyFilter() /* eslint-disable-next-line react-hooks/exhaustive-deps*/ }
+    , [filterQuery, table])
+    useEffect(() => { applySort() /* eslint-disable-next-line react-hooks/exhaustive-deps*/ }
+    , [searchedTabel])
+    useEffect(() => { splitTableByLimit(10) /* eslint-disable-next-line react-hooks/exhaustive-deps*/ }
+    , [sortedTable])
 
     return(
         <div className="table">

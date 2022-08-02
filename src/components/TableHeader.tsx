@@ -11,7 +11,8 @@ interface TableHeaderPropsTypes {
 function TableHeader({setSort, applySort}:TableHeaderPropsTypes) {
     const [nav, setNav] = useState({ 'id': false, 'title': false, 'body': false })
 
-    useEffect(()=>{applySort()},[nav])
+    useEffect(() => { applySort() /* eslint-disable-next-line react-hooks/exhaustive-deps*/ }
+    , [nav])
 
     function setActive(ident: keyof typeof nav) {
         setSort({ sortIdent: ident, ascending: !(nav[ident]) })
