@@ -8,7 +8,7 @@ import TableRows from "../components/TableRows";
 import { APIResponseTypes } from "../interfaces/APITypes";
 import type { RootState } from '../store/Store'
 import { useSelector, useDispatch } from 'react-redux'
-import { set } from '../store/tableSlice'
+import { searchTable, set } from '../store/tableSlice'
 
 function Table () {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -16,7 +16,8 @@ function Table () {
     const [sort, setSort] = useState({ sortIdent: 'id', ascending: false })
     const [table, setTable] = useState<APIResponseTypes[]>([])
     let tableData = useSelector((state: RootState) => state.table.table)
-    const [searchedTabel, setSearchedTabel] = useState<APIResponseTypes[]>([])
+    //const [searchedTabel, setSearchedTabel] = useState<APIResponseTypes[]>([])
+    let searchedTabel = useSelector((state: RootState) => state.table.sortedTable)
     const [sortedTable, setSortedTable] = useState<APIResponseTypes[]>([])
     const [splitedTable, setSplitedTable] = useState<APIResponseTypes[][]>([])
     const [currentPage, setCurrentPage] = useState(0)
@@ -26,15 +27,13 @@ function Table () {
         try {
             const data = await getAllPosts()
             dispatch(set(data))
-            setTable(data)
         } catch (error) {
             alert(error)
         }
     }
 
     function applyFilter() {
-        setSearchedTabel(tableData.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) 
-            || elem.title.toLowerCase().includes(filterQuery.toLowerCase())))
+        dispatch(searchTable(filterQuery))
     }
 
     function applySort() {
