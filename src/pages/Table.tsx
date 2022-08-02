@@ -5,21 +5,27 @@ import Pagination from "../components/Pagination";
 import Search from "../components/Search";
 import TableHeader from "../components/TableHeader";
 import TableRows from "../components/TableRows";
-import { APIResponseTypes } from "../interfaces/APITypes"
+import { APIResponseTypes } from "../interfaces/APITypes";
+import type { RootState } from '../store/Store'
+import { useSelector, useDispatch } from 'react-redux'
+import { set } from '../store/tableSlice'
 
 function Table () {
     const [searchParams, setSearchParams] = useSearchParams();
     const [filterQuery, setFilterQuery] = useState('')
     const [sort, setSort] = useState({ sortIdent: 'id', ascending: false })
     const [table, setTable] = useState<APIResponseTypes[]>([])
+    let tableData = useSelector((state: RootState) => state.table.table)
     const [searchedTabel, setSearchedTabel] = useState<APIResponseTypes[]>([])
     const [sortedTable, setSortedTable] = useState<APIResponseTypes[]>([])
     const [splitedTable, setSplitedTable] = useState<APIResponseTypes[][]>([])
     const [currentPage, setCurrentPage] = useState(0)
-
+    const dispatch = useDispatch()
+    
     async function getData(){
         try {
             const data = await getAllPosts()
+            dispatch(set(data))
             setTable(data)
         } catch (error) {
             alert(error)
@@ -27,7 +33,7 @@ function Table () {
     }
 
     function applyFilter() {
-        setSearchedTabel(table.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) 
+        setSearchedTabel(tableData.filter(elem => elem.body.toLowerCase().includes(filterQuery.toLowerCase()) 
             || elem.title.toLowerCase().includes(filterQuery.toLowerCase())))
     }
 
@@ -62,7 +68,7 @@ function Table () {
         }
     }
     useEffect(() => { getData(); setURLParamsAndCurrentPage() }, [])
-    useEffect(() => { applyFilter() }, [filterQuery, table])
+    useEffect(() => { applyFilter() }, [filterQuery, tableData])
     useEffect(() => { applySort() }, [searchedTabel])
     useEffect(() => { splitTableByLimit(10) }, [sortedTable])
 
