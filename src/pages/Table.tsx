@@ -8,17 +8,15 @@ import TableRows from "../components/TableRows";
 import { APIResponseTypes } from "../interfaces/APITypes";
 import type { RootState } from '../store/Store'
 import { useSelector, useDispatch } from 'react-redux'
-import { searchTable, set } from '../store/tableSlice'
+import { searchTable, set, sortTable } from '../store/tableSlice'
 
 function Table () {
     const [searchParams, setSearchParams] = useSearchParams();
     const [filterQuery, setFilterQuery] = useState('')
     const [sort, setSort] = useState({ sortIdent: 'id', ascending: false })
-    const [table, setTable] = useState<APIResponseTypes[]>([])
-    let tableData = useSelector((state: RootState) => state.table.table)
-    //const [searchedTabel, setSearchedTabel] = useState<APIResponseTypes[]>([])
-    let searchedTabel = useSelector((state: RootState) => state.table.sortedTable)
-    const [sortedTable, setSortedTable] = useState<APIResponseTypes[]>([])
+    const table = useSelector((state: RootState) => state.table.table)
+    const searchedTabel = useSelector((state: RootState) => state.table.searchedTable)
+    const sortedTable = useSelector((state: RootState) => state.table.sortedTable)
     const [splitedTable, setSplitedTable] = useState<APIResponseTypes[][]>([])
     const [currentPage, setCurrentPage] = useState(0)
     const dispatch = useDispatch()
@@ -37,13 +35,7 @@ function Table () {
     }
 
     function applySort() {
-        if (sort.ascending === true) {
-            setSortedTable([...searchedTabel].sort(
-                (a, b) => (a[sort.sortIdent as keyof typeof a] > b[sort.sortIdent as keyof typeof b] ? -1 : 1)))
-        } else {
-            setSortedTable([...searchedTabel].sort(
-                (a, b) => (a[sort.sortIdent as keyof typeof a] < b[sort.sortIdent as keyof typeof b] ? -1 : 1)))
-        }
+        dispatch(sortTable(sort))
         setCurrentPage(0)
         setSearchParams('page=1')
     }
@@ -67,7 +59,7 @@ function Table () {
         }
     }
     useEffect(() => { getData(); setURLParamsAndCurrentPage() }, [])
-    useEffect(() => { applyFilter() }, [filterQuery, tableData])
+    useEffect(() => { applyFilter() }, [filterQuery, table])
     useEffect(() => { applySort() }, [searchedTabel])
     useEffect(() => { splitTableByLimit(10) }, [sortedTable])
 
